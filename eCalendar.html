@@ -977,6 +977,7 @@
         function parseICS(icsContent) {
             const lines = icsContent.split('\n');
             let currentEvent = null;
+            let currentEventType = null;
             let importedCount = 0;
 
             lines.forEach(line => {
@@ -984,14 +985,31 @@
                 
                 if (line === 'BEGIN:VEVENT') {
                     currentEvent = {};
-                } else if (line === 'END:VEVENT' && currentEvent) {
+                    currentEventType = 'VEVENT';
+                } else if (line === 'BEGIN:VTODO') {
+                    currentEvent = {};
+                    currentEventType = 'VTODO';
+                } else if ((line === 'END:VEVENT' || line === 'END:VTODO') && currentEvent) {
                     if (currentEvent.title && currentEvent.date) {
+                        // Determina il tipo di evento
+                        let eventType = 'event';
+                        if (currentEventType === 'VTODO') {
+                            eventType = 'task';
+                        } else if (currentEvent.title && (
+                            currentEvent.title.toLowerCase().includes('scadenza') ||
+                            currentEvent.title.toLowerCase().includes('deadline') ||
+                            currentEvent.title.toLowerCase().includes('due') ||
+                            currentEvent.description && currentEvent.description.toLowerCase().includes('scadenza')
+                        )) {
+                            eventType = 'task';
+                        }
+
                         const newEvent = {
                             id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
                             title: currentEvent.title,
                             description: currentEvent.description || '',
                             date: currentEvent.date,
-                            type: 'event',
+                            type: eventType,
                             startTime: currentEvent.startTime || '',
                             endTime: currentEvent.endTime || '',
                             createdAt: new Date().toISOString()
@@ -1000,41 +1018,67 @@
                         importedCount++;
                     }
                     currentEvent = null;
+                    currentEventType = null;
                 } else if (currentEvent) {
                     if (line.startsWith('SUMMARY:')) {
                         currentEvent.title = line.substring(8);
                     } else if (line.startsWith('DESCRIPTION:')) {
                         currentEvent.description = line.substring(12);
-                    } else if (line.startsWith('DTSTART:')) {
-                        const dateValue = line.substring(8);
-                        if (dateValue.length >= 8) {
-                            const year = dateValue.substring(0, 4);
-                            const month = dateValue.substring(4, 6);
-                            const day = dateValue.substring(6, 8);
-                            currentEvent.date = `${year}-${month}-${day}`;
-                            
-                            if (dateValue.length > 8 && dateValue.includes('T')) {
-                                const time = dateValue.split('T')[1];
-                                if (time.length >= 4) {
-                                    const hours = time.substring(0, 2);
-                                    const minutes = time.substring(2, 4);
-                                    currentEvent.startTime = `${hours}:${minutes}`;
-                                }
-                            }
+                    } else if (line.startsWith('DTSTART:') || line.startsWith('DTSTART;')) {
+                        const dateValue = line.includes(':') ? line.split(':')[1] : line.substring(8);
+                        currentEvent.date = parseICSDate(dateValue);
+                        if (dateValue.includes('T')) {
+                            currentEvent.startTime = parseICSTime(dateValue);
                         }
-                    } else if (line.startsWith('DTEND:')) {
-                        const dateValue = line.substring(6);
-                        if (dateValue.length > 8 && dateValue.includes('T')) {
-                            const time = dateValue.split('T')[1];
-                            if (time.length >= 4) {
-                                const hours = time.substring(0, 2);
-                                const minutes = time.substring(2, 4);
-                                currentEvent.endTime = `${hours}:${minutes}`;
-                            }
+                    } else if (line.startsWith('DTEND:') || line.startsWith('DTEND;')) {
+                        const dateValue = line.includes(':') ? line.split(':')[1] : line.substring(6);
+                        if (dateValue.includes('T')) {
+                            currentEvent.endTime = parseICSTime(dateValue);
                         }
+                    } else if (line.startsWith('DUE:') || line.startsWith('DUE;')) {
+                        // Per i VTODO, DUE rappresenta la scadenza
+                        const dateValue = line.includes(':') ? line.split(':')[1] : line.substring(4);
+                        currentEvent.date = parseICSDate(dateValue);
+                        if (dateValue.includes('T')) {
+                            currentEvent.startTime = parseICSTime(dateValue);
+                        }
+                    } else if (line.startsWith('COMPLETED:')) {
+                        // Segna i task completati
+                        currentEvent.completed = true;
+                    } else if (line.startsWith('STATUS:COMPLETED')) {
+                        currentEvent.completed = true;
                     }
                 }
             });
+
+            // Funzione helper per parsare le date ICS
+            function parseICSDate(dateValue) {
+                if (!dateValue) return null;
+                
+                // Rimuovi eventuali parametri TZID
+                dateValue = dateValue.split('T')[0];
+                
+                if (dateValue.length >= 8) {
+                    const year = dateValue.substring(0, 4);
+                    const month = dateValue.substring(4, 6);
+                    const day = dateValue.substring(6, 8);
+                    return `${year}-${month}-${day}`;
+                }
+                return null;
+            }
+
+            // Funzione helper per parsare i tempi ICS
+            function parseICSTime(dateValue) {
+                if (!dateValue || !dateValue.includes('T')) return '';
+                
+                const timePart = dateValue.split('T')[1];
+                if (timePart.length >= 4) {
+                    const hours = timePart.substring(0, 2);
+                    const minutes = timePart.substring(2, 4);
+                    return `${hours}:${minutes}`;
+                }
+                return '';
+            }
 
             localStorage.setItem('calendar-events', JSON.stringify(events));
             renderCalendar();
