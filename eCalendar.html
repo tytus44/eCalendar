@@ -69,106 +69,13 @@
 
         .app-container {
             display: flex;
-            min-height: 100vh;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 260px;
-            background: var(--surface);
-            border-right: 1px solid var(--border-color);
-            padding: 1.5rem 0 0;
-            transition: all 0.3s ease;
-            position: fixed;
-            height: 100vh;
-            z-index: 100;
-            display: flex;
             flex-direction: column;
-        }
-
-        .logo-section {
-            padding: 0rem 1rem 1.5rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.75rem;
-            border-radius: var(--radius);
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .logo-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-            border-radius: var(--radius);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .logo-icon i {
-            font-size: 1.5rem;
-            color: white;
-        }
-
-        .logo-text {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .nav-menu {
-            list-style: none;
-            padding: 0 1rem;
-            flex: 1;
-        }
-
-        .nav-item {
-            margin-bottom: 0.5rem;
-        }
-
-        .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.75rem;
-            color: var(--text-secondary);
-            text-decoration: none;
-            border-radius: var(--radius);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .nav-link:hover {
-            background: var(--surface-hover);
-            color: var(--text-primary);
-        }
-
-        .nav-link.active {
-            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-            color: white;
-        }
-
-        .nav-link i {
-            font-size: 1.25rem;
-            width: 24px;
-            text-align: center;
+            min-height: 100vh;
         }
 
         /* Main Content */
         .main-content {
             flex: 1;
-            margin-left: 260px;
-            transition: margin-left 0.3s ease;
         }
 
         .header {
@@ -487,20 +394,135 @@
             display: none;
         }
 
+        /* View Controls */
+        .view-controls {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--surface-hover);
+            border-radius: var(--radius);
+            padding: 0.25rem;
+        }
+
+        .view-btn {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: none;
+            border-radius: var(--radius);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .view-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .view-btn:hover:not(.active) {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        /* Week View */
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+
+        .week-day {
+            border-right: 1px solid var(--border-color);
+            padding: 1rem;
+            min-height: 500px;
+        }
+
+        .week-day:last-child {
+            border-right: none;
+        }
+
+        .week-day-header {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            text-align: center;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .week-day.today .week-day-header {
+            color: var(--primary-color);
+        }
+
+        /* Agenda View */
+        .agenda-container {
+            padding: 1rem;
+        }
+
+        .agenda-date-group {
+            margin-bottom: 2rem;
+        }
+
+        .agenda-date-header {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .agenda-event {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--surface-hover);
+            border-radius: var(--radius);
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .agenda-event:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .agenda-event-time {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            min-width: 80px;
+        }
+
+        .agenda-event-content {
+            flex: 1;
+        }
+
+        .agenda-event-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .agenda-event-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .agenda-event-type {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary-color);
+        }
+
+        .agenda-event-type.task {
+            background: var(--secondary-color);
+        }
+
         /* Mobile */
         @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
             .header {
                 padding: 1rem;
             }
@@ -525,56 +547,39 @@
             .calendar-nav {
                 justify-content: center;
             }
+
+            .week-day {
+                min-height: 300px;
+                padding: 0.5rem;
+            }
+
+            .view-controls {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
-            <div class="logo-section">
-                <div class="logo-container">
-                    <div class="logo-icon">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                    <div class="logo-text">eCalendar</div>
-                </div>
-            </div>
-            
-            <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="#" class="nav-link active" data-page="calendar">
-                        <i class="fas fa-calendar"></i>
-                        <span class="nav-text">Calendario</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" data-page="events">
-                        <i class="fas fa-clock"></i>
-                        <span class="nav-text">Eventi</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" data-page="tasks">
-                        <i class="fas fa-check-square"></i>
-                        <span class="nav-text">Attività</span>
-                    </a>
-                </li>
-            </ul>
-        </aside>
-
         <!-- Main Content -->
         <main class="main-content">
             <!-- Header -->
             <header class="header">
                 <div class="header-left">
-                    <button class="icon-btn" id="menu-toggle">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <h1 class="dashboard-title">Calendario</h1>
+                    <div class="logo-container">
+                        <div class="logo-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="logo-text">eCalendar</div>
+                    </div>
                 </div>
                 
                 <div class="header-actions">
+                    <div class="view-controls">
+                        <button class="view-btn active" id="month-view-btn">Mese</button>
+                        <button class="view-btn" id="week-view-btn">Settimana</button>
+                        <button class="view-btn" id="agenda-view-btn">Agenda</button>
+                    </div>
                     <button class="btn" id="add-event-btn">
                         <i class="fas fa-plus"></i>
                         <span>Nuovo Evento</span>
@@ -681,10 +686,9 @@
         let currentDate = new Date();
         let events = JSON.parse(localStorage.getItem('calendar-events') || '[]');
         let editingEventId = null;
+        let currentView = 'month';
 
         // DOM elements
-        const sidebar = document.getElementById('sidebar');
-        const menuToggle = document.getElementById('menu-toggle');
         const calendarGrid = document.getElementById('calendar-grid');
         const monthYear = document.getElementById('month-year');
         const prevMonthBtn = document.getElementById('prev-month');
@@ -701,11 +705,14 @@
         const saveEventBtn = document.getElementById('save-event-btn');
         const deleteEventBtn = document.getElementById('delete-event-btn');
         const importFile = document.getElementById('import-file');
+        const monthViewBtn = document.getElementById('month-view-btn');
+        const weekViewBtn = document.getElementById('week-view-btn');
+        const agendaViewBtn = document.getElementById('agenda-view-btn');
 
-        // Event listeners
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
-        });
+        // View event listeners
+        monthViewBtn.addEventListener('click', () => switchView('month'));
+        weekViewBtn.addEventListener('click', () => switchView('week'));
+        agendaViewBtn.addEventListener('click', () => switchView('agenda'));
 
         prevMonthBtn.addEventListener('click', () => {
             currentDate.setMonth(currentDate.getMonth() - 1);
@@ -764,8 +771,44 @@
         const themeIcon = themeToggle.querySelector('i');
         themeIcon.className = savedTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
 
+        // View switching function
+        function switchView(view) {
+            currentView = view;
+            
+            // Update active button
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`${view}-view-btn`).classList.add('active');
+            
+            // Render appropriate view
+            switch(view) {
+                case 'month':
+                    renderMonthView();
+                    break;
+                case 'week':
+                    renderWeekView();
+                    break;
+                case 'agenda':
+                    renderAgendaView();
+                    break;
+            }
+        }
+
         // Calendar functions
         function renderCalendar() {
+            switch(currentView) {
+                case 'month':
+                    renderMonthView();
+                    break;
+                case 'week':
+                    renderWeekView();
+                    break;
+                case 'agenda':
+                    renderAgendaView();
+                    break;
+            }
+        }
+
+        function renderMonthView() {
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth();
             
@@ -775,8 +818,9 @@
                 year: 'numeric' 
             }).format(currentDate);
 
-            // Clear calendar
+            // Clear calendar and set month grid
             calendarGrid.innerHTML = '';
+            calendarGrid.className = 'calendar-grid';
 
             // Add day headers
             const dayHeaders = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
@@ -833,6 +877,163 @@
                 });
 
                 calendarGrid.appendChild(dayCell);
+            }
+        }
+
+        function renderWeekView() {
+            // Get start of current week
+            const startOfWeek = new Date(currentDate);
+            startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
+            
+            // Update month/year display
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(startOfWeek.getDate() + 6);
+            
+            if (startOfWeek.getMonth() === endOfWeek.getMonth()) {
+                monthYear.textContent = new Intl.DateTimeFormat('it-IT', { 
+                    month: 'long', 
+                    year: 'numeric' 
+                }).format(startOfWeek);
+            } else {
+                monthYear.textContent = `${new Intl.DateTimeFormat('it-IT', { month: 'short' }).format(startOfWeek)} - ${new Intl.DateTimeFormat('it-IT', { month: 'short', year: 'numeric' }).format(endOfWeek)}`;
+            }
+
+            // Clear calendar and set week grid
+            calendarGrid.innerHTML = '';
+            calendarGrid.className = 'week-grid';
+
+            // Create week days
+            for (let i = 0; i < 7; i++) {
+                const dayDate = new Date(startOfWeek);
+                dayDate.setDate(startOfWeek.getDate() + i);
+                
+                const weekDay = document.createElement('div');
+                weekDay.className = 'week-day';
+                
+                if (isToday(dayDate)) {
+                    weekDay.classList.add('today');
+                }
+
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'week-day-header';
+                const dayName = new Intl.DateTimeFormat('it-IT', { weekday: 'short' }).format(dayDate);
+                dayHeader.textContent = `${dayName} ${dayDate.getDate()}`;
+                weekDay.appendChild(dayHeader);
+
+                // Add events for this day
+                const dayEvents = getEventsForDate(dayDate);
+                dayEvents.forEach(event => {
+                    const eventElement = document.createElement('div');
+                    eventElement.className = `event ${event.type}`;
+                    eventElement.textContent = event.title;
+                    if (event.startTime) {
+                        eventElement.textContent = `${event.startTime} ${event.title}`;
+                    }
+                    eventElement.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openEventModal(event);
+                    });
+                    weekDay.appendChild(eventElement);
+                });
+
+                weekDay.addEventListener('click', () => {
+                    const dateString = dayDate.toISOString().split('T')[0];
+                    openEventModal(null, dateString);
+                });
+
+                calendarGrid.appendChild(weekDay);
+            }
+        }
+
+        function renderAgendaView() {
+            // Update month/year display
+            monthYear.textContent = 'Vista Agenda';
+            
+            // Clear calendar and set agenda container
+            calendarGrid.innerHTML = '';
+            calendarGrid.className = 'agenda-container';
+
+            // Get all events and sort by date
+            const sortedEvents = [...events].sort((a, b) => {
+                const dateCompare = new Date(a.date) - new Date(b.date);
+                if (dateCompare === 0) {
+                    return (a.startTime || '').localeCompare(b.startTime || '');
+                }
+                return dateCompare;
+            });
+
+            // Group events by date
+            const eventsByDate = {};
+            sortedEvents.forEach(event => {
+                if (!eventsByDate[event.date]) {
+                    eventsByDate[event.date] = [];
+                }
+                eventsByDate[event.date].push(event);
+            });
+
+            // Render grouped events
+            Object.keys(eventsByDate).forEach(date => {
+                const dateGroup = document.createElement('div');
+                dateGroup.className = 'agenda-date-group';
+
+                const dateHeader = document.createElement('div');
+                dateHeader.className = 'agenda-date-header';
+                const dateObj = new Date(date + 'T00:00:00');
+                dateHeader.textContent = new Intl.DateTimeFormat('it-IT', { 
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                }).format(dateObj);
+                dateGroup.appendChild(dateHeader);
+
+                eventsByDate[date].forEach(event => {
+                    const agendaEvent = document.createElement('div');
+                    agendaEvent.className = 'agenda-event';
+                    
+                    const eventType = document.createElement('div');
+                    eventType.className = `agenda-event-type ${event.type}`;
+                    agendaEvent.appendChild(eventType);
+
+                    const eventTime = document.createElement('div');
+                    eventTime.className = 'agenda-event-time';
+                    eventTime.textContent = event.startTime || 'Tutto il giorno';
+                    agendaEvent.appendChild(eventTime);
+
+                    const eventContent = document.createElement('div');
+                    eventContent.className = 'agenda-event-content';
+                    
+                    const eventTitle = document.createElement('div');
+                    eventTitle.className = 'agenda-event-title';
+                    eventTitle.textContent = event.title;
+                    eventContent.appendChild(eventTitle);
+
+                    if (event.description) {
+                        const eventDescription = document.createElement('div');
+                        eventDescription.className = 'agenda-event-description';
+                        eventDescription.textContent = event.description;
+                        eventContent.appendChild(eventDescription);
+                    }
+
+                    agendaEvent.appendChild(eventContent);
+
+                    agendaEvent.addEventListener('click', () => {
+                        openEventModal(event);
+                    });
+
+                    dateGroup.appendChild(agendaEvent);
+                });
+
+                calendarGrid.appendChild(dateGroup);
+            });
+
+            if (Object.keys(eventsByDate).length === 0) {
+                const emptyMessage = document.createElement('div');
+                emptyMessage.style.textAlign = 'center';
+                emptyMessage.style.color = 'var(--text-muted)';
+                emptyMessage.style.marginTop = '2rem';
+                emptyMessage.textContent = 'Nessun evento programmato';
+                calendarGrid.appendChild(emptyMessage);
             }
         }
 
